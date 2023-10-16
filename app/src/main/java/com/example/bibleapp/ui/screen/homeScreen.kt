@@ -1,10 +1,15 @@
 package com.example.bibleapp.ui.screen
 
+import android.util.Log
+import androidx.compose.foundation.clickable
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material3.Button
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Surface
 import androidx.compose.material3.Tab
 import androidx.compose.material3.Text
 import androidx.compose.material3.TabRow
@@ -16,6 +21,7 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.navigation.NavController
+import com.example.bibleapp.TAG
 import com.example.bibleapp.data.model.Bible
 import com.example.bibleapp.data.model.Book
 
@@ -36,35 +42,23 @@ fun HomeScreen(navController: NavController){
         }
 
         if(tabState == 0){
-            ListOfBooks(testament = bible.oldTestament)
+            ListOfBooks(testament = bible.oldTestament, onClickBookName = {book-> navController.navigate("book/${book}")})
         }else{
-        ListOfBooks(testament = bible.newTestament)
+        ListOfBooks(testament = bible.newTestament, onClickBookName = {book-> navController.navigate("book/${book}")})
         }
 
     }
 
-
-
-
-//    Column() {
-//
-//        Text(text = "Home Screen")
-//
-//        Button(onClick = { navController.navigate("book") }) {
-//            Text(text = "Go to Book Screen")
-//        }
-//
-//    }
-
-
 }
 
 @Composable
-fun ListOfBooks(testament:List<Book>){
+fun ListOfBooks(testament:List<Book>, onClickBookName:(bookName:String)->Unit){
     
     LazyColumn{
         items(testament){book ->
-            Text(text = "${book.nameLong}")
+            Surface(modifier = Modifier.clickable { onClickBookName(book.name) }) {
+                Text(text = "${book.nameLong}")
+            }
         }
     }
 

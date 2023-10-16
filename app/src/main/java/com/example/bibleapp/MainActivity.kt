@@ -10,16 +10,20 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.navigation
 import androidx.navigation.compose.rememberNavController
+import androidx.navigation.navArgument
 import com.example.bibleapp.ui.screen.BookScreen
 import com.example.bibleapp.ui.screen.Chapter1Screen
 import com.example.bibleapp.ui.screen.Chapter2Screen
 import com.example.bibleapp.ui.screen.HomeScreen
 import com.example.bibleapp.ui.theme.BibleAppTheme
 
+
+const val TAG = "MainActivity"
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -45,15 +49,18 @@ fun MainApp(){
      composable(route = "home"){
          HomeScreen(navController)
      }
-    //region The nested navigation
-     navigation(startDestination = "bookHome", route = "book"){
-         composable("bookHome"){ BookScreen(navController)}
-         composable("chapter1"){ Chapter1Screen(navController)}
-         composable("chapter2"){ Chapter2Screen(navController)}
+     composable(
+         route = "book/{name}",
+         arguments = listOf(
+             navArgument("name"){
+                 type = NavType.StringType
+                 defaultValue = "Default"
+             }
+         )
+     ){navBackStackEntry ->
+         val nameParam = navBackStackEntry.arguments?.getString("name")
+         nameParam?.let { BookScreen(navController, bookName = it)}
      }
-     //endregion
-
-
 
  }
 }
