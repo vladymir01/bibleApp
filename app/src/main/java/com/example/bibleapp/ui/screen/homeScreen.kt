@@ -56,7 +56,7 @@ fun ListOfBooks(testament:List<Book>, onClickBookName:(bookName:String)->Unit){
     
     LazyColumn{
         items(testament){book ->
-            Surface(modifier = Modifier.clickable { onClickBookName(book.name) }) {
+            Surface(modifier = Modifier.clickable { onClickBookName(book.id) }) {
                 Text(text = "${book.nameLong}")
             }
         }
