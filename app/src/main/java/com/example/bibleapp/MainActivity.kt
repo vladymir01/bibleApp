@@ -10,6 +10,14 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.navigation.compose.NavHost
+import androidx.navigation.compose.composable
+import androidx.navigation.compose.navigation
+import androidx.navigation.compose.rememberNavController
+import com.example.bibleapp.ui.screen.BookScreen
+import com.example.bibleapp.ui.screen.Chapter1Screen
+import com.example.bibleapp.ui.screen.Chapter2Screen
+import com.example.bibleapp.ui.screen.HomeScreen
 import com.example.bibleapp.ui.theme.BibleAppTheme
 
 class MainActivity : ComponentActivity() {
@@ -22,7 +30,7 @@ class MainActivity : ComponentActivity() {
                     modifier = Modifier.fillMaxSize(),
                     color = MaterialTheme.colorScheme.background
                 ) {
-                    Greeting("Android")
+                    MainApp()
                 }
             }
         }
@@ -30,17 +38,22 @@ class MainActivity : ComponentActivity() {
 }
 
 @Composable
-fun Greeting(name: String, modifier: Modifier = Modifier) {
-    Text(
-        text = "Hello $name!",
-        modifier = modifier
-    )
-}
+fun MainApp(){
+ val navController = rememberNavController()
 
-@Preview(showBackground = true)
-@Composable
-fun GreetingPreview() {
-    BibleAppTheme {
-        Greeting("Android")
-    }
+ NavHost(navController, startDestination = "home"){
+     composable(route = "home"){
+         HomeScreen(navController)
+     }
+    //region The nested navigation
+     navigation(startDestination = "bookHome", route = "book"){
+         composable("bookHome"){ BookScreen(navController)}
+         composable("chapter1"){ Chapter1Screen(navController)}
+         composable("chapter2"){ Chapter2Screen(navController)}
+     }
+     //endregion
+
+
+
+ }
 }
