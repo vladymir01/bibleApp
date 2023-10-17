@@ -50,16 +50,21 @@ fun MainApp(){
          HomeScreen(navController)
      }
      composable(
-         route = "book/{id}",
+         route = "book/{id}/{name}",
          arguments = listOf(
              navArgument("id"){
                  type = NavType.StringType
                  defaultValue = "Default"
-             }
+             },
+         navArgument("name"){
+             type = NavType.StringType
+             defaultValue = "Default"
+         }
          )
      ){navBackStackEntry ->
          val idParam = navBackStackEntry.arguments?.getString("id")
-         idParam?.let { BookScreen(navController, bookId = it)}
+         val nameParam = navBackStackEntry.arguments?.getString("name")
+         idParam?.let { nameParam?.let { it1 -> BookScreen(navController, bookId = it, it1) } }
      }
 
  }

@@ -42,9 +42,9 @@ fun HomeScreen(navController: NavController){
         }
 
         if(tabState == 0){
-            ListOfBooks(testament = bible.oldTestament, onClickBookName = {book-> navController.navigate("book/${book}")})
+            ListOfBooks(testament = bible.oldTestament, onClickBookName = {id,name-> navController.navigate("book/${id}/${name}")})
         }else{
-        ListOfBooks(testament = bible.newTestament, onClickBookName = {book-> navController.navigate("book/${book}")})
+        ListOfBooks(testament = bible.newTestament, onClickBookName = {id, name-> navController.navigate("book/${id}/${name}")})
         }
 
     }
@@ -52,11 +52,11 @@ fun HomeScreen(navController: NavController){
 }
 
 @Composable
-fun ListOfBooks(testament:List<Book>, onClickBookName:(bookName:String)->Unit){
+fun ListOfBooks(testament:List<Book>, onClickBookName:(id:String, name:String)->Unit){
     
     LazyColumn{
         items(testament){book ->
-            Surface(modifier = Modifier.clickable { onClickBookName(book.id) }) {
+            Surface(modifier = Modifier.clickable { onClickBookName(book.id, book.name) }) {
                 Text(text = "${book.nameLong}")
             }
         }
