@@ -4,30 +4,29 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.material3.Button
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.livedata.observeAsState
 import androidx.navigation.NavController
+import com.example.bibleapp.ui.ViewModel.BibleViewModel
 
 @Composable
-fun Chapter1Screen(navController: NavController){
-    Column() {
+fun ChapterScreen(bibleViewModel:BibleViewModel,book:String, chapter:String){
 
-        Text(text = "Chapter 1")
+    val chapterContent by bibleViewModel.contentChapter.observeAsState()
 
-        Button(onClick = { navController.navigateUp() }) {
-            Text(text = "Back to Book Screen")
+
+    LaunchedEffect(key1 = Unit){
+        bibleViewModel.getTheContentChapter(book, chapter)
+    }
+    if (chapterContent != null){
+        Column() {
+            Text("${chapterContent?.Book}")
+            Text(text = "Chapter:${chapterContent?.Chapter}")
+            Text(text = "${chapterContent?.Output}")
         }
-
+    }else{
+        Text(text = "Loading...")
     }
 }
 
-@Composable
-fun Chapter2Screen(navController: NavController){
-    Column() {
-
-        Text(text = "Chapter 2")
-
-        Button(onClick = { navController.navigateUp() }) {
-            Text(text = "Back to Book Screen")
-        }
-
-    }
-}

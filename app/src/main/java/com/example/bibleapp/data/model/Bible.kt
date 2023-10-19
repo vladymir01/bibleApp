@@ -24,7 +24,7 @@ val bookOldTestament = listOf<Book>(
     Book("NEH", "65eec8e0b60e656b-01", "NEH", "Nehemiah", "Nehemiah"),
     Book("EST", "65eec8e0b60e656b-01", "EST", "Esther", "Esther"),
     Book("JOB", "65eec8e0b60e656b-01", "Job", "Job", "Job"),
-    Book("PSA", "65eec8e0b60e656b-01", "Psalms", "Psalms", "Psalms"),
+    Book("PSA", "65eec8e0b60e656b-01", "PSA", "Psalms", "Psalms"),
     Book("PRO", "65eec8e0b60e656b-01", "PRO", "Proverbs", "Proverbs"),
     Book("ECC", "65eec8e0b60e656b-01", "ECC", "Ecclesiastes", "Ecclesiastes"),
     Book("SNG", "65eec8e0b60e656b-01", "SNG", "Song of Songs", "Song of Songs"),

@@ -10,15 +10,16 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.navigation
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navArgument
+import com.example.bibleapp.ui.ViewModel.BibleViewModel
 import com.example.bibleapp.ui.screen.BookScreen
-import com.example.bibleapp.ui.screen.Chapter1Screen
-import com.example.bibleapp.ui.screen.Chapter2Screen
+import com.example.bibleapp.ui.screen.ChapterScreen
 import com.example.bibleapp.ui.screen.HomeScreen
 import com.example.bibleapp.ui.theme.BibleAppTheme
 
@@ -43,12 +44,15 @@ class MainActivity : ComponentActivity() {
 
 @Composable
 fun MainApp(){
+    val bibleViewModel: BibleViewModel = viewModel()
+
  val navController = rememberNavController()
 
  NavHost(navController, startDestination = "home"){
      composable(route = "home"){
          HomeScreen(navController)
      }
+     //region composable to navigate to the list of chapters of a selected book
      composable(
          route = "book/{id}/{name}",
          arguments = listOf(
@@ -64,8 +68,29 @@ fun MainApp(){
      ){navBackStackEntry ->
          val idParam = navBackStackEntry.arguments?.getString("id")
          val nameParam = navBackStackEntry.arguments?.getString("name")
-         idParam?.let { nameParam?.let { it1 -> BookScreen(navController, bookId = it, it1) } }
+         idParam?.let { nameParam?.let { it1 -> BookScreen(bibleViewModel,navController, it, it1) } }
      }
+     //endregion
 
+     //region composable to navigate to the content of a selected chapter
+        composable(
+            route = "chapter/{book}/{chapter}",
+            arguments = listOf(
+                navArgument("book"){
+                    type = NavType.StringType
+                    defaultValue = "Default"
+                },
+                navArgument("chapter"){
+                    type = NavType.StringType
+                    defaultValue = "Default"
+                }
+            )
+        ){navBackStackEntry ->
+            val bookParam = navBackStackEntry.arguments?.getString("book")
+            val chapterParam = navBackStackEntry.arguments?.getString("chapter")
+            bookParam?.let{chapterParam?.let{it1 -> ChapterScreen(bibleViewModel,it,it1)}}
+        }
+     //endregion
  }
 }
+
