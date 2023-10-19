@@ -34,16 +34,16 @@ fun BookScreen(bibleViewModel: BibleViewModel,navController: NavController, book
         Log.d(TAG, "The bookId is: $bookId")
         bibleViewModel.getTheChapters(bookId)
     }
-
-    if (chapters != null){
+    //Here I'm using the let with the run to do an if else statement,
+    // doing so I can quietly call the new variable theChapters without doing the null check
+    chapters?.let {theChapters ->
         Column() {
-            Text("$name: ${chapters?.size}")
+            Text("$name: ${theChapters.size}")
             LazyVerticalGrid(
                 columns = GridCells.Adaptive(minSize = 100.dp),
                 verticalArrangement = Arrangement.spacedBy(30.dp)
             ){
-                chapters?.let {chapterList ->  //Testing if the chapter is not null, we use a new variable chapterList (we could also use the operator "it")
-                    items(chapterList){ chapter->
+                    items(theChapters){ chapter->
                         if(chapter.number != "intro"){
                             Surface(
                                 modifier = Modifier.clickable {navController.navigate("chapter/${name}/${chapter.number}") }
@@ -51,7 +51,6 @@ fun BookScreen(bibleViewModel: BibleViewModel,navController: NavController, book
                                 Text(chapter.number)
                             }
                         }
-                    }
                 }
             }
 
@@ -59,7 +58,7 @@ fun BookScreen(bibleViewModel: BibleViewModel,navController: NavController, book
                 Text(text = "Go back")
             }
         }
-    }else{
+    }?:run{
         Text(text = "Loading...")
     }
 }

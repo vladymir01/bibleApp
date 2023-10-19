@@ -19,13 +19,16 @@ fun ChapterScreen(bibleViewModel:BibleViewModel,book:String, chapter:String){
     LaunchedEffect(key1 = Unit){
         bibleViewModel.getTheContentChapter(book, chapter)
     }
-    if (chapterContent != null){
+    //Here I'm using the let with the run to do an if else statement,
+    // doing so I will not have to do the null check when calling the
+    // chapterContent variable like this: chapterContent?.chapter
+    chapterContent?.let {
         Column() {
-            Text("${chapterContent?.Book}")
-            Text(text = "Chapter:${chapterContent?.Chapter}")
-            Text(text = "${chapterContent?.Output}")
+            Text(it.Book)
+            Text(text = "Chapter:${it.Chapter}")
+            Text(text = it.Output)
         }
-    }else{
+    }?:run{
         Text(text = "Loading...")
     }
 }
