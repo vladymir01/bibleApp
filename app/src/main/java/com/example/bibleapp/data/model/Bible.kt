@@ -41,10 +41,10 @@ val bookOldTestament = listOf<Book>(
     Book("MIC", "65eec8e0b60e656b-01", "MIC", "Micah", "Micah"),
     Book("NAM", "65eec8e0b60e656b-01", "NAM", "Nahum", "Nahum"),
     Book("HAB", "65eec8e0b60e656b-01", "HAB", "Habakkuk", "Habakkuk"),
-    Book("ZEP", "65eec8e0b60e656b-01", "Zephaniah", "Zephaniah", "Zephaniah"),
+    Book("ZEP", "65eec8e0b60e656b-01", "ZEP", "Zephaniah", "Zephaniah"),
     Book("HAG", "65eec8e0b60e656b-01", "HAG", "Haggai", "Haggai"),
-    Book("ZEC", "65eec8e0b60e656b-01", "Zechariah", "Zechariah", "Zechariah"),
-    Book("MAL", "65eec8e0b60e656b-01", "Malachi", "Malachi", "Malachi")
+    Book("ZEC", "65eec8e0b60e656b-01", "ZEC", "Zechariah", "Zechariah"),
+    Book("MAL", "65eec8e0b60e656b-01", "MAL", "Malachi", "Malachi")
 )
 
 val bookNewTestament = listOf<Book>(
