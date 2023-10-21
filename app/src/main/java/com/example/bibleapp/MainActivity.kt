@@ -88,7 +88,7 @@ fun MainApp(){
         ){navBackStackEntry ->
             val bookParam = navBackStackEntry.arguments?.getString("book")
             val chapterParam = navBackStackEntry.arguments?.getString("chapter")
-            bookParam?.let{chapterParam?.let{it1 -> ChapterScreen(bibleViewModel,it,it1)}}
+            bookParam?.let{chapterParam?.let{it1 -> ChapterScreen(navController,bibleViewModel,it,it1)}}
         }
      //endregion
  }
