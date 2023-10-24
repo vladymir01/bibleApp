@@ -20,10 +20,13 @@ import androidx.compose.material.icons.filled.Menu
 import androidx.compose.material.icons.filled.Phone
 import androidx.compose.material3.Button
 import androidx.compose.material3.CenterAlignedTopAppBar
+import androidx.compose.material3.DrawerValue
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.ModalDrawerSheet
+import androidx.compose.material3.ModalNavigationDrawer
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Tab
@@ -31,10 +34,12 @@ import androidx.compose.material3.Text
 import androidx.compose.material3.TabRow
 import androidx.compose.material3.TopAppBar
 import androidx.compose.material3.TopAppBarDefaults
+import androidx.compose.material3.rememberDrawerState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -46,6 +51,7 @@ import androidx.navigation.NavController
 import com.example.bibleapp.TAG
 import com.example.bibleapp.data.model.Bible
 import com.example.bibleapp.data.model.Book
+import kotlinx.coroutines.launch
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -53,44 +59,55 @@ fun HomeScreen(navController: NavController){
     val bible = Bible()
     var tabState by remember { mutableStateOf(0) }
     val tabTitles = listOf("Old Testament", "New Testament")
-    Scaffold(
-        topBar = { HomeTopBar()}
-    ) { innerPadding ->
-        //region The body of the home screen
-        Surface(
-        modifier = Modifier.padding(innerPadding)
-        ) {
-            Column(
-                modifier = Modifier.padding(start = 20.dp, end = 20.dp, bottom = 20.dp)
+
+    val drawerState = rememberDrawerState(initialValue = DrawerValue.Closed)
+    val scope = rememberCoroutineScope()
+
+    ModalNavigationDrawer(
+      drawerState = drawerState,
+      drawerContent = { ModalDrawerSheet { Text(text = "Content of the Drawer")}}
+    ){
+        Scaffold(
+            topBar = { HomeTopBar(onClickMenu = {
+                scope.launch {
+                    drawerState.apply { if (isClosed) open() else close() }
+                }
+            })}
+        ) { innerPadding ->
+            //region The body of the home screen
+            Surface(
+                modifier = Modifier.padding(innerPadding)
             ) {
-                TabRow(selectedTabIndex = tabState) {
-                    tabTitles.forEachIndexed { index, title ->
-                        Tab(
-                            selected = tabState == index,
-                            onClick = { tabState = index },
-                            text = { Text(text = title, fontSize = 20.sp) }
-                        )
+                Column(
+                    modifier = Modifier.padding(start = 20.dp, end = 20.dp, bottom = 20.dp)
+                ) {
+                    TabRow(selectedTabIndex = tabState) {
+                        tabTitles.forEachIndexed { index, title ->
+                            Tab(
+                                selected = tabState == index,
+                                onClick = { tabState = index },
+                                text = { Text(text = title, fontSize = 20.sp) }
+                            )
+                        }
+                    }
+
+                    if(tabState == 0){
+                        ListOfBooks(testament = bible.oldTestament, onClickBookName = {id,name-> navController.navigate("book/${id}/${name}")})
+                    }else{
+                        ListOfBooks(testament = bible.newTestament, onClickBookName = {id, name-> navController.navigate("book/${id}/${name}")})
                     }
                 }
 
-                if(tabState == 0){
-                    ListOfBooks(testament = bible.oldTestament, onClickBookName = {id,name-> navController.navigate("book/${id}/${name}")})
-                }else{
-                    ListOfBooks(testament = bible.newTestament, onClickBookName = {id, name-> navController.navigate("book/${id}/${name}")})
-                }
+
             }
-
-
+            //endregion
         }
-        //endregion
     }
-   
-
 }
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun HomeTopBar(){
+fun HomeTopBar(onClickMenu:()->Unit){
     CenterAlignedTopAppBar(
         colors = TopAppBarDefaults.smallTopAppBarColors(
             containerColor = MaterialTheme.colorScheme.primaryContainer,
@@ -103,7 +120,7 @@ fun HomeTopBar(){
             }
         },
         actions = {
-            IconButton(onClick = { /*TODO*/ }) {
+            IconButton(onClick = { onClickMenu()}) {
                 Icon(imageVector = Icons.Filled.Menu, contentDescription = "menu")
             }
         }

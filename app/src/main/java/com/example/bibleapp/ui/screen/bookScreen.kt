@@ -73,7 +73,7 @@ fun BookScreen(bibleViewModel: BibleViewModel,navController: NavController, book
                                 modifier = Modifier
                                     .clickable {navController.navigate("chapter/${name}/${chapter.number}") }
                             ) {
-                                Text(chapter.number, fontSize = 20.sp, modifier = Modifier.background(Color.Cyan), textAlign = TextAlign.Center)
+                                Text(chapter.number, fontSize = 20.sp, textAlign = TextAlign.Center)
                             }
                         }
                     }
