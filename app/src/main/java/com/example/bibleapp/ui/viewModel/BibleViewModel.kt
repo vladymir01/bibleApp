@@ -1,9 +1,8 @@
-package com.example.bibleapp.ui.ViewModel
+package com.example.bibleapp.ui.viewModel
 
+import android.content.Context
+import android.speech.tts.TextToSpeech
 import android.util.Log
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.setValue
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
@@ -13,6 +12,7 @@ import com.example.bibleapp.data.model.rapidApi.ContentChapter
 import com.example.bibleapp.data.repository.ChapterRepository
 import com.example.bibleapp.data.repository.RapidApiRepository
 import kotlinx.coroutines.launch
+import java.util.Locale
 
 class BibleViewModel: ViewModel() {
     private val chapterRepository = ChapterRepository()
@@ -23,11 +23,32 @@ class BibleViewModel: ViewModel() {
     private val _contentChapter:MutableLiveData<ContentChapter> = MutableLiveData()
     val contentChapter:MutableLiveData<ContentChapter> = _contentChapter
 
-    fun setContentChapter(theContentChapter: ContentChapter){
+    private var textToSpeech:TextToSpeech? = null
+
+    private fun setContentChapter(theContentChapter: ContentChapter){
         _contentChapter.value = theContentChapter
     }
 
+    fun textToSpeech(context: Context, textToRead:String){
+        textToSpeech = TextToSpeech(context) {
+            if(it == TextToSpeech.SUCCESS){
+                textToSpeech?.let{text ->
+                    text.language = Locale.US
+                    text.setSpeechRate(0.8F)
+                        text.speak(
+                            textToRead,
+                            TextToSpeech.QUEUE_ADD,
+                            null,
+                            null
+                        )
+                }
+            }
+        }
+    }
 
+    fun textToSpeechStop(){
+        textToSpeech?.stop()
+    }
 
     fun setChapters(theChapters:List<Chapter>){
         _chapters.value = theChapters

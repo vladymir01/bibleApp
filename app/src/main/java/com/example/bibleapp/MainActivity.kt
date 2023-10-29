@@ -6,21 +6,19 @@ import androidx.activity.compose.setContent
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
-import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
-import androidx.navigation.compose.navigation
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navArgument
-import com.example.bibleapp.ui.ViewModel.BibleViewModel
+import com.example.bibleapp.ui.viewModel.BibleViewModel
 import com.example.bibleapp.ui.screen.BookScreen
 import com.example.bibleapp.ui.screen.ChapterScreen
 import com.example.bibleapp.ui.screen.HomeScreen
+import com.example.bibleapp.ui.screen.TestingLifeCycle
 import com.example.bibleapp.ui.theme.BibleAppTheme
 
 
@@ -36,6 +34,7 @@ class MainActivity : ComponentActivity() {
                     color = MaterialTheme.colorScheme.background
                 ) {
                     MainApp()
+//                    TestingLifeCycle()
                 }
             }
         }
@@ -88,7 +87,12 @@ fun MainApp(){
         ){navBackStackEntry ->
             val bookParam = navBackStackEntry.arguments?.getString("book")
             val chapterParam = navBackStackEntry.arguments?.getString("chapter")
-            bookParam?.let{chapterParam?.let{it1 -> ChapterScreen(navController,bibleViewModel,it,it1)}}
+            bookParam?.let{chapterParam?.let{it1 -> ChapterScreen(
+                navController = navController,
+                bibleViewModel = bibleViewModel,
+                book = it,
+                chapter = it1
+            )}}
         }
      //endregion
  }

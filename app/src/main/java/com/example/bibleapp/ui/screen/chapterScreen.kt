@@ -1,44 +1,74 @@
 package com.example.bibleapp.ui.screen
 
-import androidx.compose.foundation.gestures.scrollable
-import androidx.compose.foundation.layout.Box
+import android.util.Log
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.material3.Button
-import androidx.compose.material3.CenterAlignedTopAppBar
 import androidx.compose.material3.Divider
 import androidx.compose.material3.ExperimentalMaterial3Api
-import androidx.compose.material3.Icon
-import androidx.compose.material3.IconButton
-import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
-import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.DisposableEffect
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.platform.LocalLifecycleOwner
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.lifecycle.Lifecycle
+import androidx.lifecycle.LifecycleEventObserver
+import androidx.lifecycle.LifecycleOwner
 import androidx.navigation.NavController
-import com.example.bibleapp.ui.ViewModel.BibleViewModel
+import com.example.bibleapp.TAG
+import com.example.bibleapp.ui.viewModel.BibleViewModel
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun ChapterScreen(navController: NavController,bibleViewModel:BibleViewModel,book:String, chapter:String){
+fun ChapterScreen(
+    lifecycleOwner: LifecycleOwner = LocalLifecycleOwner.current,
+    navController: NavController,
+    bibleViewModel:BibleViewModel,
+    book:String,
+    chapter:String
+){
 
     val chapterContent by bibleViewModel.contentChapter.observeAsState()
+    val context = LocalContext.current
 
+//region The Side Effects
 
     LaunchedEffect(key1 = Unit){
         bibleViewModel.getTheContentChapter(book, chapter)
     }
+
+    DisposableEffect(lifecycleOwner) {
+        val observer = LifecycleEventObserver { _, event ->
+            if (event == Lifecycle.Event.ON_START) {
+                Log.d(TAG,"That is the ON_START")
+            } else if (event == Lifecycle.Event.ON_STOP) {
+                Log.d(TAG,"That is the ON_STOP")
+                bibleViewModel.textToSpeechStop()
+            }
+
+
+        }
+
+        // Add the observer to the lifecycle
+        lifecycleOwner.lifecycle.addObserver(observer)
+
+        // When the effect leaves the Composition, remove the observer
+        onDispose {
+            lifecycleOwner.lifecycle.removeObserver(observer)
+        }
+    }
+
+  //endregion
 
     Scaffold(
         topBar = { MyTopBar(book, navController)}
@@ -50,6 +80,15 @@ fun ChapterScreen(navController: NavController,bibleViewModel:BibleViewModel,boo
         chapterContent?.let {
             Surface(modifier = Modifier.padding(innerPadding)) {
                 Column(modifier = Modifier.padding(20.dp)) {
+                    //region The button to read the text
+                    Button(onClick = { bibleViewModel.textToSpeech(context, it.Output) }) {
+                        Text("Read for me")
+                    }
+                    Button(onClick = { bibleViewModel.textToSpeechStop() }) {
+                        Text(text = "Stop")
+                    }
+
+                    //endregion
                     Text(
                         text = "Chapter: ${it.Chapter}",
                         fontSize = 24.sp,
