@@ -8,9 +8,11 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.lazy.itemsIndexed
@@ -18,8 +20,10 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Home
 import androidx.compose.material.icons.filled.Menu
 import androidx.compose.material.icons.filled.Phone
+import androidx.compose.material.icons.filled.Settings
 import androidx.compose.material3.Button
 import androidx.compose.material3.CenterAlignedTopAppBar
+import androidx.compose.material3.Divider
 import androidx.compose.material3.DrawerValue
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
@@ -29,6 +33,7 @@ import androidx.compose.material3.ModalDrawerSheet
 import androidx.compose.material3.ModalNavigationDrawer
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Surface
+import androidx.compose.material3.Switch
 import androidx.compose.material3.Tab
 import androidx.compose.material3.Text
 import androidx.compose.material3.TabRow
@@ -65,7 +70,7 @@ fun HomeScreen(navController: NavController){
 
     ModalNavigationDrawer(
       drawerState = drawerState,
-      drawerContent = { ModalDrawerSheet { Text(text = "Content of the Drawer")}}
+      drawerContent = { ModalDrawerSheet { DrawerContent()}}
     ){
         Scaffold(
             topBar = { HomeTopBar(onClickMenu = {
@@ -105,6 +110,41 @@ fun HomeScreen(navController: NavController){
     }
 }
 
+
+@Composable
+fun DrawerContent(){
+    var checked by remember {mutableStateOf(true)}
+    Column(modifier = Modifier.background(MaterialTheme.colorScheme.background).padding(20.dp)) {
+        Row(
+            modifier = Modifier.fillMaxWidth().padding(bottom = 40.dp),
+            horizontalArrangement = Arrangement.End
+        ) {
+            Text(text = "Settings", fontSize = 20.sp)
+        }
+        Divider(modifier = Modifier.padding(top = 15.dp, bottom = 15.dp))
+        Row(
+            verticalAlignment = Alignment.CenterVertically,
+            modifier = Modifier.fillMaxWidth(),
+            horizontalArrangement = Arrangement.SpaceBetween
+        ){
+            Text(text = "Text To Speech")
+            Switch(checked = checked, onCheckedChange = {} )
+        }
+        Divider(modifier = Modifier.padding(top = 15.dp, bottom = 15.dp))
+        Row(
+            verticalAlignment = Alignment.CenterVertically,
+            modifier = Modifier.fillMaxWidth(),
+            horizontalArrangement = Arrangement.SpaceBetween
+        ){
+            Text(text = "Dark Mode")
+            Switch(checked = checked, onCheckedChange = {} )
+        }
+        Divider(modifier = Modifier.padding(top = 15.dp, bottom = 15.dp))
+
+    }
+
+}
+
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun HomeTopBar(onClickMenu:()->Unit){
@@ -124,7 +164,7 @@ fun HomeTopBar(onClickMenu:()->Unit){
         actions = {
             IconButton(onClick = { onClickMenu()}) {
                 Icon(
-                    imageVector = Icons.Filled.Menu,
+                    imageVector = Icons.Filled.Settings,
                     contentDescription = "menu"
                 )
             }
@@ -132,6 +172,8 @@ fun HomeTopBar(onClickMenu:()->Unit){
 
         )
 }
+
+
 
 @Composable
 fun ListOfBooks(testament:List<Book>, onClickBookName:(id:String, name:String)->Unit){
