@@ -1,6 +1,7 @@
 package com.example.bibleapp.ui.screen
 
 import android.util.Log
+import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -26,6 +27,7 @@ import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -51,7 +53,7 @@ fun BookScreen(bibleViewModel: BibleViewModel,navController: NavController, book
         // doing so I can quietly call the new variable theChapters without doing the null check
         //region The body of the book screen
         chapters?.let {theChapters ->
-            Column(modifier = Modifier.padding(innerPadding)) {
+            Column(modifier = Modifier.padding(innerPadding).background(MaterialTheme.colorScheme.background)) {
                 Text("Chapters", fontSize = 24.sp, modifier = Modifier.padding(bottom = 10.dp))
                 Divider(thickness = 1.dp, modifier = Modifier.padding(bottom = 10.dp))
                 LazyVerticalGrid(
@@ -83,7 +85,7 @@ fun MyTopBar(title:String, navController: NavController){
     CenterAlignedTopAppBar(
         colors = TopAppBarDefaults.smallTopAppBarColors(
             containerColor = MaterialTheme.colorScheme.primaryContainer,
-            titleContentColor = MaterialTheme.colorScheme.primary
+            titleContentColor = MaterialTheme.colorScheme.onPrimaryContainer
         ),
         title = { Text(title, fontSize = 24.sp)},
         navigationIcon = {

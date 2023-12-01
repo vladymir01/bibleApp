@@ -1,13 +1,24 @@
 package com.example.bibleapp.ui.screen
 
 import android.util.Log
+import androidx.compose.foundation.background
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.PlayArrow
 import androidx.compose.material3.Button
 import androidx.compose.material3.Divider
 import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
@@ -17,6 +28,7 @@ import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalLifecycleOwner
 import androidx.compose.ui.unit.dp
@@ -81,11 +93,23 @@ fun ChapterScreen(
             Surface(modifier = Modifier.padding(innerPadding)) {
                 Column(modifier = Modifier.padding(20.dp)) {
                     //region The button to read the text
-                    Button(onClick = { bibleViewModel.textToSpeech(context, it.Output) }) {
-                        Text("Read for me")
-                    }
-                    Button(onClick = { bibleViewModel.textToSpeechStop() }) {
-                        Text(text = "Stop")
+                    Row(
+                        modifier = Modifier.fillMaxWidth(),
+                        horizontalArrangement = Arrangement.End
+                    ){
+                        IconButton(
+                            onClick = { bibleViewModel.textToSpeech(context, it.Output) },
+                            modifier = Modifier.background(MaterialTheme.colorScheme.tertiaryContainer)
+                        ) {
+                           Icon(imageVector = Icons.Filled.PlayArrow, contentDescription = "The play button")
+                        }
+                        Spacer(modifier = Modifier.size(10.dp))
+                        IconButton(
+                            onClick = { bibleViewModel.textToSpeechStop()},
+                            modifier = Modifier.background(MaterialTheme.colorScheme.tertiaryContainer)
+                        ) {
+                            Text(text = "Stop")
+                        }
                     }
 
                     //endregion

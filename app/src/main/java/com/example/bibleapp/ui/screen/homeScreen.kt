@@ -111,17 +111,22 @@ fun HomeTopBar(onClickMenu:()->Unit){
     CenterAlignedTopAppBar(
         colors = TopAppBarDefaults.smallTopAppBarColors(
             containerColor = MaterialTheme.colorScheme.primaryContainer,
-            titleContentColor = MaterialTheme.colorScheme.primary
+            titleContentColor = MaterialTheme.colorScheme.onPrimaryContainer
         ),
         title = { Text(text = "Bible App")},
         navigationIcon = {
             IconButton(onClick = { /*TODO*/ }) {
-                Icon(imageVector = Icons.Filled.Home, contentDescription = "Home Screen")
+                Icon(imageVector = Icons.Filled.Home,
+                    contentDescription = "Home Screen"
+                )
             }
         },
         actions = {
             IconButton(onClick = { onClickMenu()}) {
-                Icon(imageVector = Icons.Filled.Menu, contentDescription = "menu")
+                Icon(
+                    imageVector = Icons.Filled.Menu,
+                    contentDescription = "menu"
+                )
             }
         }
 

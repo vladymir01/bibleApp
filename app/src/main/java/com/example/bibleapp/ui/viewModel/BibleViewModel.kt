@@ -30,18 +30,21 @@ class BibleViewModel: ViewModel() {
     }
 
     fun textToSpeech(context: Context, textToRead:String){
+        Log.d(TAG, textToRead)
         textToSpeech = TextToSpeech(context) {
             if(it == TextToSpeech.SUCCESS){
-                textToSpeech?.let{text ->
-                    text.language = Locale.US
-                    text.setSpeechRate(0.8F)
-                        text.speak(
-                            textToRead,
-                            TextToSpeech.QUEUE_ADD,
-                            null,
-                            null
-                        )
-                }
+
+                    textToSpeech?.let{text ->
+                        text.language = Locale.US
+                        text.setSpeechRate(0.8F)
+
+                            text.speak(
+                                textToRead,
+                                TextToSpeech.QUEUE_ADD,
+                                null,
+                                null
+                            )
+                    }
             }
         }
     }
@@ -50,7 +53,7 @@ class BibleViewModel: ViewModel() {
         textToSpeech?.stop()
     }
 
-    fun setChapters(theChapters:List<Chapter>){
+    private fun setChapters(theChapters:List<Chapter>){
         _chapters.value = theChapters
     }
 
