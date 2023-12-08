@@ -56,11 +56,12 @@ import androidx.navigation.NavController
 import com.example.bibleapp.TAG
 import com.example.bibleapp.data.model.Bible
 import com.example.bibleapp.data.model.Book
+import com.example.bibleapp.ui.viewModel.BibleViewModel
 import kotlinx.coroutines.launch
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun HomeScreen(navController: NavController){
+fun HomeScreen(navController: NavController,bibleViewModel: BibleViewModel){
     val bible = Bible()
     var tabState by remember { mutableStateOf(0) }
     val tabTitles = listOf("Old Testament", "New Testament")
@@ -70,7 +71,7 @@ fun HomeScreen(navController: NavController){
 
     ModalNavigationDrawer(
       drawerState = drawerState,
-      drawerContent = { ModalDrawerSheet { DrawerContent()}}
+      drawerContent = { ModalDrawerSheet { DrawerContent(bibleViewModel)}}
     ){
         Scaffold(
             topBar = { HomeTopBar(onClickMenu = {
@@ -112,8 +113,7 @@ fun HomeScreen(navController: NavController){
 
 
 @Composable
-fun DrawerContent(){
-    var checked by remember {mutableStateOf(true)}
+fun DrawerContent(bibleViewModel: BibleViewModel){
     Column(modifier = Modifier.background(MaterialTheme.colorScheme.background).padding(20.dp)) {
         Row(
             modifier = Modifier.fillMaxWidth().padding(bottom = 40.dp),
@@ -128,7 +128,7 @@ fun DrawerContent(){
             horizontalArrangement = Arrangement.SpaceBetween
         ){
             Text(text = "Text To Speech")
-            Switch(checked = checked, onCheckedChange = {} )
+            Switch(checked = bibleViewModel.textToSpeechIsActive.value, onCheckedChange = {bibleViewModel.setTextToSpeech(it)} )
         }
         Divider(modifier = Modifier.padding(top = 15.dp, bottom = 15.dp))
         Row(
@@ -137,7 +137,7 @@ fun DrawerContent(){
             horizontalArrangement = Arrangement.SpaceBetween
         ){
             Text(text = "Dark Mode")
-            Switch(checked = checked, onCheckedChange = {} )
+            Switch(checked = bibleViewModel.darkModeIsActive.value, onCheckedChange = {bibleViewModel.setTheDarkMode(it)} )
         }
         Divider(modifier = Modifier.padding(top = 15.dp, bottom = 15.dp))
 

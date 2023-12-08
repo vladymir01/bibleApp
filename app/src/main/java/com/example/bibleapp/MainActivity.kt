@@ -27,14 +27,13 @@ class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContent {
-            BibleAppTheme {
-                // A surface container using the 'background' color from the theme
+            val bibleViewModel: BibleViewModel = viewModel()
+            BibleAppTheme(darkTheme = bibleViewModel.darkModeIsActive.value) {
                 Surface(
                     modifier = Modifier.fillMaxSize(),
                     color = MaterialTheme.colorScheme.background
                 ) {
-                    MainApp()
-//                    TestingLifeCycle()
+                    MainApp(bibleViewModel)
                 }
             }
         }
@@ -42,14 +41,12 @@ class MainActivity : ComponentActivity() {
 }
 
 @Composable
-fun MainApp(){
-    val bibleViewModel: BibleViewModel = viewModel()
-
+fun MainApp(bibleViewModel: BibleViewModel){
  val navController = rememberNavController()
 
  NavHost(navController, startDestination = "home"){
      composable(route = "home"){
-         HomeScreen(navController)
+         HomeScreen(navController,bibleViewModel)
      }
      //region composable to navigate to the list of chapters of a selected book
      composable(

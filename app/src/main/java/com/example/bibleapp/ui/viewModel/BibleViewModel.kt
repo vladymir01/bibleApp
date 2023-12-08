@@ -3,6 +3,11 @@ package com.example.bibleapp.ui.viewModel
 import android.content.Context
 import android.speech.tts.TextToSpeech
 import android.util.Log
+import androidx.compose.runtime.State
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
@@ -25,6 +30,19 @@ class BibleViewModel: ViewModel() {
 
     private var textToSpeech:TextToSpeech? = null
 
+    private val _textToSpeechIsActive = mutableStateOf(true)
+    val textToSpeechIsActive: State<Boolean> = _textToSpeechIsActive
+
+    private val _darkModeIsActive = mutableStateOf(false)
+    val darkModeIsActive = _darkModeIsActive
+
+    fun setTheDarkMode(theMode: Boolean){
+        _darkModeIsActive.value = theMode
+    }
+
+    fun setTextToSpeech(theMode:Boolean){
+        _textToSpeechIsActive.value = theMode
+    }
     private fun setContentChapter(theContentChapter: ContentChapter){
         _contentChapter.value = theContentChapter
     }

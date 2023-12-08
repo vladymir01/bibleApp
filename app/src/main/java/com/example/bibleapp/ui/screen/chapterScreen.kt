@@ -98,6 +98,7 @@ fun ChapterScreen(
                         horizontalArrangement = Arrangement.End
                     ){
                         IconButton(
+                            enabled = bibleViewModel.textToSpeechIsActive.value,
                             onClick = { bibleViewModel.textToSpeech(context, it.Output) },
                             modifier = Modifier.background(MaterialTheme.colorScheme.tertiaryContainer)
                         ) {
@@ -105,6 +106,7 @@ fun ChapterScreen(
                         }
                         Spacer(modifier = Modifier.size(10.dp))
                         IconButton(
+
                             onClick = { bibleViewModel.textToSpeechStop()},
                             modifier = Modifier.background(MaterialTheme.colorScheme.tertiaryContainer)
                         ) {
