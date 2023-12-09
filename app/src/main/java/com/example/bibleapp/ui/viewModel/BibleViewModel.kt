@@ -4,10 +4,7 @@ import android.content.Context
 import android.speech.tts.TextToSpeech
 import android.util.Log
 import androidx.compose.runtime.State
-import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
@@ -47,22 +44,62 @@ class BibleViewModel: ViewModel() {
         _contentChapter.value = theContentChapter
     }
 
-    fun textToSpeech(context: Context, textToRead:String){
-        Log.d(TAG, textToRead)
-        textToSpeech = TextToSpeech(context) {
-            if(it == TextToSpeech.SUCCESS){
+    //region The original function textToSpeech
 
-                    textToSpeech?.let{text ->
-                        text.language = Locale.US
-                        text.setSpeechRate(0.8F)
+//    fun textToSpeech(context: Context, textToRead:String){
+//        //region Test displaying the long chapter
+//
+//        val maxLength = 4000 // Max length for a log message
+//
+//            // Your long text from the API
+//        Log.d(TAG, "The length of the text: ${textToRead.length}")
+//            // Split the text into smaller chunks for logging
+//        var index = 0
+//        while (index < textToRead.length) {
+//            val end =
+//                if (index + maxLength < textToRead.length) index + maxLength else textToRead.length
+//            Log.d(TAG, textToRead.substring(index, end))
+//            Log.d(TAG, "hello")
+//            index += maxLength
+//        }
+//        //endregion
+//        textToSpeech = TextToSpeech(context) {
+//            if(it == TextToSpeech.SUCCESS){
+//
+//                    textToSpeech?.let{text ->
+//                        text.language = Locale.US
+//                        text.setSpeechRate(0.8F)
+//
+//                            text.speak(
+//                                textToRead,
+//                                TextToSpeech.QUEUE_ADD,
+//                                null,
+//                                null
+//                            )
+//                    }
+//            }
+//        }
+//    }
 
-                            text.speak(
-                                textToRead,
-                                TextToSpeech.QUEUE_ADD,
-                                null,
-                                null
-                            )
+
+    //endregion
+
+    fun textToSpeech(context: Context, textToRead: String) {
+        val maxLength = 4000 // Max length for a speech chunk
+
+        textToSpeech = TextToSpeech(context) { status ->
+            if (status == TextToSpeech.SUCCESS) {
+                textToSpeech?.apply {
+                    language = Locale.US
+                    setSpeechRate(0.8F)
+
+                    var index = 0
+                    while (index < textToRead.length) {
+                        val chunk = textToRead.substring(index, kotlin.math.min(index + maxLength, textToRead.length))
+                        speak(chunk, TextToSpeech.QUEUE_ADD, null, null)
+                        index += maxLength
                     }
+                }
             }
         }
     }
@@ -80,7 +117,7 @@ class BibleViewModel: ViewModel() {
             try {
                 val response = rapidApiRepository.getChapterContent(book, chapter)
                 setContentChapter(response)
-                Log.d(TAG, "The chapter selected is: $response")
+//                Log.d(TAG, "The chapter selected is: $response")
             }catch (e:Exception){
                 Log.d(TAG, "Something bad happen - ${e.message}")
             }
@@ -93,7 +130,7 @@ class BibleViewModel: ViewModel() {
             try {
                 val response:List<Chapter> = chapterRepository.getChapters(bookId)
                 setChapters(response)
-                Log.d(TAG, "The number of chapters are: ${response.size}")
+//                Log.d(TAG, "The number of chapters are: ${response.size}")
             }catch (e:Exception){
                 Log.d(TAG, "Something went wrong - ${e.message}")
             }

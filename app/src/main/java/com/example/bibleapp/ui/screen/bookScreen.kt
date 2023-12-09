@@ -54,7 +54,7 @@ fun BookScreen(bibleViewModel: BibleViewModel,navController: NavController, book
         //region The body of the book screen
         chapters?.let {theChapters ->
             Column(modifier = Modifier.padding(innerPadding).background(MaterialTheme.colorScheme.background)) {
-                Text("Chapters", fontSize = 24.sp, modifier = Modifier.padding(bottom = 10.dp))
+                Text("Chapters", fontSize = 24.sp, modifier = Modifier.padding(start = 20.dp,bottom = 10.dp))
                 Divider(thickness = 1.dp, modifier = Modifier.padding(bottom = 10.dp))
                 LazyVerticalGrid(
                     columns = GridCells.Adaptive(minSize = 75.dp),
