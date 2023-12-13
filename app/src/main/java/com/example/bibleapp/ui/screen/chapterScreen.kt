@@ -110,14 +110,14 @@ fun ChapterScreen(
                             onClick = { bibleViewModel.textToSpeechStop()},
                             modifier = Modifier.background(MaterialTheme.colorScheme.tertiaryContainer)
                         ) {
-                            Text(text = "Stop")
+                            Text(text = "Stop", style = MaterialTheme.typography.bodyMedium)
                         }
                     }
 
                     //endregion
                     Text(
                         text = "Chapter: ${it.Chapter}",
-                        fontSize = 24.sp,
+                        style = MaterialTheme.typography.titleMedium,
                         modifier = Modifier.padding(bottom = 10.dp)
                     )
                     Divider(thickness = 1.dp)
@@ -126,14 +126,14 @@ fun ChapterScreen(
                             .verticalScroll(rememberScrollState())
                             .padding(top = 10.dp)
                     ) {
-                        Text(text = it.Output, fontSize = 20.sp)
+                        Text(text = it.Output, style = MaterialTheme.typography.bodyMedium)
                     }
                 }
             }
         }?: run {
 
             Surface(modifier = Modifier.padding(innerPadding)) {
-                Text(text = "Loading...")
+                Text(text = "Loading...", style = MaterialTheme.typography.titleMedium)
             }
         }
 

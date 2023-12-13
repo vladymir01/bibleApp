@@ -54,7 +54,7 @@ fun BookScreen(bibleViewModel: BibleViewModel,navController: NavController, book
         //region The body of the book screen
         chapters?.let {theChapters ->
             Column(modifier = Modifier.padding(innerPadding).background(MaterialTheme.colorScheme.background)) {
-                Text("Chapters", fontSize = 24.sp, modifier = Modifier.padding(start = 20.dp,bottom = 10.dp))
+                Text("Chapters", style = MaterialTheme.typography.titleMedium, modifier = Modifier.padding(start = 20.dp,bottom = 10.dp))
                 Divider(thickness = 1.dp, modifier = Modifier.padding(bottom = 10.dp))
                 LazyVerticalGrid(
                     columns = GridCells.Adaptive(minSize = 75.dp),
@@ -66,14 +66,22 @@ fun BookScreen(bibleViewModel: BibleViewModel,navController: NavController, book
                                 modifier = Modifier
                                     .clickable {navController.navigate("chapter/${name}/${chapter.number}") }
                             ) {
-                                Text(chapter.number, fontSize = 20.sp, textAlign = TextAlign.Center)
+                                Text(
+                                    chapter.number,
+                                    style = MaterialTheme.typography.bodyMedium,
+                                    textAlign = TextAlign.Center
+                                )
                             }
                         }
                     }
                 }
             }
         }?:run{
-            Text(text = "Loading...", modifier = Modifier.padding(innerPadding))
+            Text(
+                text = "Loading...",
+                style = MaterialTheme.typography.titleMedium,
+                modifier = Modifier.padding(innerPadding)
+            )
         }
         //endregion
     }
@@ -87,7 +95,7 @@ fun MyTopBar(title:String, navController: NavController){
             containerColor = MaterialTheme.colorScheme.primaryContainer,
             titleContentColor = MaterialTheme.colorScheme.onPrimaryContainer
         ),
-        title = { Text(title, fontSize = 24.sp)},
+        title = { Text(title, style = MaterialTheme.typography.headlineMedium)},
         navigationIcon = {
             IconButton(onClick = { navController.navigateUp() }) {
                 Icon(imageVector = Icons.Filled.ArrowBack, contentDescription = "Home Screen")

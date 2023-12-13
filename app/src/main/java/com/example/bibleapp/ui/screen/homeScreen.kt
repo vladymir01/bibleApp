@@ -92,7 +92,7 @@ fun HomeScreen(navController: NavController,bibleViewModel: BibleViewModel){
                             Tab(
                                 selected = tabState == index,
                                 onClick = { tabState = index },
-                                text = { Text(text = title, fontSize = 20.sp) }
+                                text = { Text(text = title, style = MaterialTheme.typography.titleMedium) }
                             )
                         }
                     }
@@ -119,7 +119,7 @@ fun DrawerContent(bibleViewModel: BibleViewModel){
             modifier = Modifier.fillMaxWidth().padding(bottom = 40.dp),
             horizontalArrangement = Arrangement.End
         ) {
-            Text(text = "Settings", fontSize = 20.sp)
+            Text(text = "Settings", style = MaterialTheme.typography.headlineMedium)
         }
         Divider(modifier = Modifier.padding(top = 15.dp, bottom = 15.dp))
         Row(
@@ -127,7 +127,7 @@ fun DrawerContent(bibleViewModel: BibleViewModel){
             modifier = Modifier.fillMaxWidth(),
             horizontalArrangement = Arrangement.SpaceBetween
         ){
-            Text(text = "Text To Speech")
+            Text(text = "Text To Speech", style = MaterialTheme.typography.titleMedium)
             Switch(checked = bibleViewModel.textToSpeechIsActive.value, onCheckedChange = {bibleViewModel.setTextToSpeech(it)} )
         }
         Divider(modifier = Modifier.padding(top = 15.dp, bottom = 15.dp))
@@ -136,7 +136,7 @@ fun DrawerContent(bibleViewModel: BibleViewModel){
             modifier = Modifier.fillMaxWidth(),
             horizontalArrangement = Arrangement.SpaceBetween
         ){
-            Text(text = "Dark Mode")
+            Text(text = "Dark Mode", style = MaterialTheme.typography.titleMedium)
             Switch(checked = bibleViewModel.darkModeIsActive.value, onCheckedChange = {bibleViewModel.setTheDarkMode(it)} )
         }
         Divider(modifier = Modifier.padding(top = 15.dp, bottom = 15.dp))
@@ -153,7 +153,7 @@ fun HomeTopBar(onClickMenu:()->Unit){
             containerColor = MaterialTheme.colorScheme.primaryContainer,
             titleContentColor = MaterialTheme.colorScheme.onPrimaryContainer
         ),
-        title = { Text(text = "Bible App")},
+        title = { Text(text = "Bible App", style = MaterialTheme.typography.headlineMedium)},
         navigationIcon = {
             IconButton(onClick = { /*TODO*/ }) {
                 Icon(imageVector = Icons.Filled.Home,
@@ -190,8 +190,8 @@ fun ListOfBooks(testament:List<Book>, onClickBookName:(id:String, name:String)->
 
             ) {
                 Row() {
-                    Text(text = "${index + 1}  -  ", fontSize = 20.sp)
-                    Text(text = book.nameLong, fontSize = 20.sp)
+                    Text(text = "${index + 1}  -  ", style = MaterialTheme.typography.bodyMedium)
+                    Text(text = book.nameLong, style = MaterialTheme.typography.bodyMedium)
                 }
             }
         }

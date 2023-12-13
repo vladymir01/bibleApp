@@ -27,7 +27,7 @@ class BibleViewModel: ViewModel() {
 
     private var textToSpeech:TextToSpeech? = null
 
-    private val _textToSpeechIsActive = mutableStateOf(true)
+    private val _textToSpeechIsActive = mutableStateOf(false)
     val textToSpeechIsActive: State<Boolean> = _textToSpeechIsActive
 
     private val _darkModeIsActive = mutableStateOf(false)
