@@ -2,6 +2,7 @@ package com.example.bibleapp.ui.screen
 
 import android.annotation.SuppressLint
 import android.util.Log
+import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
@@ -53,12 +54,14 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.semantics.Role
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
+import com.example.bibleapp.R
 import com.example.bibleapp.TAG
 import com.example.bibleapp.data.model.Bible
 import com.example.bibleapp.data.model.Book
@@ -200,8 +203,9 @@ fun HomeTopBar(bibleViewModel: BibleViewModel,onClickMenu:()->Unit){
     CenterAlignedTopAppBar(
         colors = TopAppBarDefaults.smallTopAppBarColors(
             containerColor = MaterialTheme.colorScheme.primaryContainer,
-            titleContentColor = MaterialTheme.colorScheme.onPrimaryContainer
+            titleContentColor = MaterialTheme.colorScheme.onPrimaryContainer,
         ),
+//        modifier = Modifier.padding(start = 20.dp),
         title = { Text(
             text = "Bible App",
             style = when(bibleViewModel.SelectedOption.value){
@@ -212,11 +216,11 @@ fun HomeTopBar(bibleViewModel: BibleViewModel,onClickMenu:()->Unit){
             }
         )},
         navigationIcon = {
-            IconButton(onClick = { /*TODO*/ }) {
-                Icon(imageVector = Icons.Filled.Home,
-                    contentDescription = "Home Screen"
-                )
-            }
+                         Image(
+                             painter = painterResource(id = R.drawable.bible_app) ,
+                             contentDescription = "Logo",
+                             modifier = Modifier.size(48.dp)
+                         )
         },
         actions = {
             IconButton(onClick = { onClickMenu()}) {
