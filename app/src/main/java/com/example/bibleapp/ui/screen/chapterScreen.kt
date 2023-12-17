@@ -83,7 +83,7 @@ fun ChapterScreen(
   //endregion
 
     Scaffold(
-        topBar = { MyTopBar(book, navController)}
+        topBar = { MyTopBar(bibleViewModel,book, navController)}
     ) { innerPadding ->
         //Here I'm using the let with the run to do an if else statement,
         // doing so I will not have to do the null check when calling the
@@ -110,14 +110,27 @@ fun ChapterScreen(
                             onClick = { bibleViewModel.textToSpeechStop()},
                             modifier = Modifier.background(MaterialTheme.colorScheme.tertiaryContainer)
                         ) {
-                            Text(text = "Stop", style = MaterialTheme.typography.bodyMedium)
+                            Text(
+                                text = "Stop",
+                                style = when(bibleViewModel.SelectedOption.value){
+                                    "Small" -> MaterialTheme.typography.bodySmall
+                                    "Medium" -> MaterialTheme.typography.bodyMedium
+                                    "Large" -> MaterialTheme.typography.bodyLarge
+                                    else -> MaterialTheme.typography.bodyMedium
+                                },
+                            )
                         }
                     }
 
                     //endregion
                     Text(
                         text = "Chapter: ${it.Chapter}",
-                        style = MaterialTheme.typography.titleMedium,
+                        style = when(bibleViewModel.SelectedOption.value){
+                            "Small" -> MaterialTheme.typography.titleSmall
+                            "Medium" -> MaterialTheme.typography.titleMedium
+                            "Large" -> MaterialTheme.typography.titleLarge
+                            else -> MaterialTheme.typography.titleMedium
+                        },
                         modifier = Modifier.padding(bottom = 10.dp)
                     )
                     Divider(thickness = 1.dp)
@@ -126,14 +139,30 @@ fun ChapterScreen(
                             .verticalScroll(rememberScrollState())
                             .padding(top = 10.dp)
                     ) {
-                        Text(text = it.Output, style = MaterialTheme.typography.bodyMedium)
+                        Text(
+                            text = it.Output,
+                            style = when(bibleViewModel.SelectedOption.value){
+                                "Small" -> MaterialTheme.typography.bodySmall
+                                "Medium" -> MaterialTheme.typography.bodyMedium
+                                "Large" -> MaterialTheme.typography.bodyLarge
+                                else -> MaterialTheme.typography.bodyMedium
+                            },
+                        )
                     }
                 }
             }
         }?: run {
 
             Surface(modifier = Modifier.padding(innerPadding)) {
-                Text(text = "Loading...", style = MaterialTheme.typography.titleMedium)
+                Text(
+                    text = "Loading...",
+                    style = when(bibleViewModel.SelectedOption.value){
+                        "Small" -> MaterialTheme.typography.titleSmall
+                        "Medium" -> MaterialTheme.typography.titleMedium
+                        "Large" -> MaterialTheme.typography.titleLarge
+                        else -> MaterialTheme.typography.titleMedium
+                    },
+                )
             }
         }
 

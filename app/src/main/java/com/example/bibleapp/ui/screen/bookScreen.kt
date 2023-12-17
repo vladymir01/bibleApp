@@ -47,14 +47,22 @@ fun BookScreen(bibleViewModel: BibleViewModel,navController: NavController, book
         bibleViewModel.getTheChapters(bookId)
     }
     Scaffold(
-        topBar = { MyTopBar(name, navController)}
+        topBar = { MyTopBar(bibleViewModel,name, navController)}
     ) {innerPadding ->
         //Here I'm using the let with the run to do an if else statement,
         // doing so I can quietly call the new variable theChapters without doing the null check
         //region The body of the book screen
         chapters?.let {theChapters ->
             Column(modifier = Modifier.padding(innerPadding).background(MaterialTheme.colorScheme.background)) {
-                Text("Chapters", style = MaterialTheme.typography.titleMedium, modifier = Modifier.padding(start = 20.dp,bottom = 10.dp))
+                Text(
+                    text = "Chapters",
+                    style = when(bibleViewModel.SelectedOption.value){
+                        "Small" -> MaterialTheme.typography.titleSmall
+                        "Medium" -> MaterialTheme.typography.titleMedium
+                        "Large" -> MaterialTheme.typography.titleLarge
+                        else -> MaterialTheme.typography.titleMedium
+                    },
+                    modifier = Modifier.padding(start = 20.dp,bottom = 10.dp))
                 Divider(thickness = 1.dp, modifier = Modifier.padding(bottom = 10.dp))
                 LazyVerticalGrid(
                     columns = GridCells.Adaptive(minSize = 75.dp),
@@ -68,7 +76,12 @@ fun BookScreen(bibleViewModel: BibleViewModel,navController: NavController, book
                             ) {
                                 Text(
                                     chapter.number,
-                                    style = MaterialTheme.typography.bodyMedium,
+                                    style = when(bibleViewModel.SelectedOption.value){
+                                        "Small" -> MaterialTheme.typography.bodySmall
+                                        "Medium" -> MaterialTheme.typography.bodyMedium
+                                        "Large" -> MaterialTheme.typography.bodyLarge
+                                        else -> MaterialTheme.typography.bodyMedium
+                                    },
                                     textAlign = TextAlign.Center
                                 )
                             }
@@ -79,7 +92,12 @@ fun BookScreen(bibleViewModel: BibleViewModel,navController: NavController, book
         }?:run{
             Text(
                 text = "Loading...",
-                style = MaterialTheme.typography.titleMedium,
+                style = when(bibleViewModel.SelectedOption.value){
+                    "Small" -> MaterialTheme.typography.titleSmall
+                    "Medium" -> MaterialTheme.typography.titleMedium
+                    "Large" -> MaterialTheme.typography.titleLarge
+                    else -> MaterialTheme.typography.titleMedium
+                },
                 modifier = Modifier.padding(innerPadding)
             )
         }
@@ -89,13 +107,21 @@ fun BookScreen(bibleViewModel: BibleViewModel,navController: NavController, book
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun MyTopBar(title:String, navController: NavController){
+fun MyTopBar(bibleViewModel: BibleViewModel,title:String, navController: NavController){
     CenterAlignedTopAppBar(
         colors = TopAppBarDefaults.smallTopAppBarColors(
             containerColor = MaterialTheme.colorScheme.primaryContainer,
             titleContentColor = MaterialTheme.colorScheme.onPrimaryContainer
         ),
-        title = { Text(title, style = MaterialTheme.typography.headlineMedium)},
+        title = { Text(
+            title,
+            style = when(bibleViewModel.SelectedOption.value){
+                "Small" -> MaterialTheme.typography.headlineSmall
+                "Medium" -> MaterialTheme.typography.headlineMedium
+                "Large" -> MaterialTheme.typography.headlineLarge
+                else -> MaterialTheme.typography.headlineMedium
+            },
+        )},
         navigationIcon = {
             IconButton(onClick = { navController.navigateUp() }) {
                 Icon(imageVector = Icons.Filled.ArrowBack, contentDescription = "Home Screen")

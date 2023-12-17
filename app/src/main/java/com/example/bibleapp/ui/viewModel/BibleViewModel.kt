@@ -3,8 +3,10 @@ package com.example.bibleapp.ui.viewModel
 import android.content.Context
 import android.speech.tts.TextToSpeech
 import android.util.Log
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.State
 import androidx.compose.runtime.mutableStateOf
+import androidx.compose.ui.text.TextStyle
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
@@ -32,6 +34,15 @@ class BibleViewModel: ViewModel() {
 
     private val _darkModeIsActive = mutableStateOf(false)
     val darkModeIsActive = _darkModeIsActive
+
+    val radioOptions = listOf("Small", "Medium", "Large")
+    private val _SelectedOption = mutableStateOf(radioOptions[1])
+    val SelectedOption = _SelectedOption
+
+
+    fun onOptionSelected(newOption: String){
+        _SelectedOption.value = newOption
+    }
 
     fun setTheDarkMode(theMode: Boolean){
         _darkModeIsActive.value = theMode

@@ -18,7 +18,6 @@ import com.example.bibleapp.ui.viewModel.BibleViewModel
 import com.example.bibleapp.ui.screen.BookScreen
 import com.example.bibleapp.ui.screen.ChapterScreen
 import com.example.bibleapp.ui.screen.HomeScreen
-import com.example.bibleapp.ui.screen.TestingLifeCycle
 import com.example.bibleapp.ui.theme.BibleAppTheme
 
 
